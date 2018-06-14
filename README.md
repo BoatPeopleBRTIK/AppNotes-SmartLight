@@ -1182,6 +1182,8 @@ Compress the compiled firmware and add the CRC information for the OTA.
 $ cd os
 $ make image ota
 ```
+Note: The resulting "ota.bin" can be found under **/build/configs/$(BOARD_NAME)/bin**
+
 
 #### How to fusing OTA binary
 
