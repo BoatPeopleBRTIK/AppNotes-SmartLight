@@ -1,0 +1,172 @@
+/****************************************************************************
+ *
+ * Copyright 2018 Samsung Electronics All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ *
+ ****************************************************************************/
+
+/**
+ * @file smart_light_config.c
+ */
+
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <artik_error.h>
+
+#include "smart_light.h"
+
+static char config_file[16] = "/mnt/config";
+
+void PrintConfiguration(void)
+{
+	printf("Wifi:\n");
+	printf("\tssid: %s\n", wifi_config.ssid);
+	printf("\tpassphrase: %s\n", wifi_config.passphrase);
+	printf("\tsecure: %s\n", wifi_config.secure ? "true" : "false");
+	printf("\tNTP server: %s\n", wifi_config.ntp_server);
+
+	printf("Cloud:\n");
+	printf("\tdevice_id: %s\n", cloud_config.device_id);
+	printf("\tdevice_token: %s\n", cloud_config.device_token);
+	printf("\tdevice_type_id: %s\n", cloud_config.device_type_id);
+	printf("\tis_secure_device_type: %d\n", cloud_config.is_secure_device_type);
+
+	printf("Lwm2m:\n");
+	printf("\tis_ota_update: %d\n", lwm2m_config.is_ota_update);
+	printf("\tota_signature_verification: %d\n", lwm2m_config.ota_signature_verification);
+	printf("\tsigning_time: %d/%d/%d\n", lwm2m_config.signing_time.day,
+		   lwm2m_config.signing_time.month, lwm2m_config.signing_time.year);
+	printf("\tsigning_time_tmp: %d/%d/%d\n", lwm2m_config.signing_time_tmp.day,
+		   lwm2m_config.signing_time_tmp.month, lwm2m_config.signing_time_tmp.year);
+
+}
+
+artik_error InitConfiguration(void)
+{
+	struct stat st;
+	int fd = 0;
+	artik_error err = S_OK;
+
+	stat(config_file, &st);
+
+	if (st.st_size != (sizeof(wifi_config) + sizeof(cloud_config) + sizeof(lwm2m_config))) {
+		printf("Invalid configuration, creating default one\n");
+
+		err = ResetConfiguration(true);
+	} else {
+
+		fd = open(config_file, O_RDONLY);
+		if (fd == -1) {
+			printf("Unable to open configuration file (errno=%d)\n", errno);
+			err = E_ACCESS_DENIED;
+			goto exit;
+		}
+
+		lseek(fd, 0, SEEK_SET);
+		read(fd, (void *)&wifi_config, sizeof(wifi_config));
+		read(fd, (void *)&cloud_config, sizeof(cloud_config));
+		read(fd, (void *)&lwm2m_config, sizeof(lwm2m_config));
+
+		close(fd);
+	}
+
+exit:
+	return err;
+}
+
+
+void PrintFromConfigFile(void)
+{
+    struct WifiConfig tempWiFiConfig;
+    struct ArtikCloudConfig tempCloudConfig;
+    struct Lwm2mConfig tempLwm2mConfig;
+
+    int fd = 0;
+
+    fd = open(config_file, O_RDONLY);
+    if (fd == -1) {
+        printf("Unable to open configuration file (errno=%d)\n", errno);
+    }
+    else
+    {
+      lseek(fd, 0, SEEK_SET);
+      read(fd, (void *)&tempWiFiConfig, sizeof(tempWiFiConfig));
+      read(fd, (void *)&tempCloudConfig, sizeof(tempCloudConfig));
+      read(fd, (void *)&tempLwm2mConfig, sizeof(tempLwm2mConfig));
+
+      close(fd);
+
+      printf("\n\nPrint information from %s file:\n", config_file);
+      printf("Wifi:\n");
+      printf("\tssid: %s\n",          tempWiFiConfig.ssid);
+      printf("\tpassphrase: %s\n",    tempWiFiConfig.passphrase);
+      printf("\tsecure: %s\n",        tempWiFiConfig.secure ? "true" : "false");
+      printf("\tNTP server: %s\n",    tempWiFiConfig.ntp_server);
+
+      printf("Cloud:\n");
+      printf("\tdevice_id: %s\n",         tempCloudConfig.device_id);
+      printf("\tdevice_token: %s\n",      tempCloudConfig.device_token);
+      printf("\tdevice_type_id: %s\n",    tempCloudConfig.device_type_id);
+      printf("\tis_secure_device_type: %d\n", tempCloudConfig.is_secure_device_type);
+
+      printf("Lwm2m:\n");
+      printf("\tis_ota_update: %d\n",                 tempLwm2mConfig.is_ota_update);
+      printf("\tota_signature_verification: %d\n",    tempLwm2mConfig.ota_signature_verification);
+      printf("\tsigning_time: %d/%d/%d\n",            tempLwm2mConfig.signing_time.day,
+                                                      tempLwm2mConfig.signing_time.month, 
+                                                      tempLwm2mConfig.signing_time.year);
+      printf("\tsigning_time_tmp: %d/%d/%d\n\n",      tempLwm2mConfig.signing_time_tmp.day,
+                                                      tempLwm2mConfig.signing_time_tmp.month, 
+                                                      tempLwm2mConfig.signing_time_tmp.year);
+    }
+}
+
+artik_error SaveConfiguration(void)
+{
+	int ret = 0;
+	int fd = 0;
+
+	fd = open(config_file, O_WRONLY|O_CREAT);
+	if (fd == -1) {
+		printf("Unable to open configuration file (errno=%d)\n", errno);
+		return E_ACCESS_DENIED;
+	}
+
+	lseek(fd, 0, SEEK_SET);
+	ret = write(fd, (const void *)&wifi_config, sizeof(wifi_config));
+	if (ret != sizeof(wifi_config))
+		printf("Failed to write wifi config (%d - errno=%d)\n", ret, errno);
+	ret = write(fd, (const void *)&cloud_config, sizeof(cloud_config));
+	if (ret != sizeof(cloud_config))
+		printf("Failed to write wifi config (%d - errno=%d)\n", ret, errno);
+	ret = write(fd, (const void *)&lwm2m_config, sizeof(lwm2m_config));
+	if (ret != sizeof(lwm2m_config))
+		printf("Failed to write lwm2m state (%d - errno=%d)\n", ret, errno);
+
+	close(fd);
+
+	return S_OK;
+}
+
+artik_error ResetConfiguration(bool force)
+{
+	WifiResetConfig(force);
+	CloudResetConfig(force);
+	Lwm2mResetConfig(force);
+
+	return SaveConfiguration();
+}

@@ -1,0 +1,3 @@
+config ENTRY_SMART_LIGHT
+	bool "Smart Light Example"
+	depends on EXAMPLES_SMART_LIGHT

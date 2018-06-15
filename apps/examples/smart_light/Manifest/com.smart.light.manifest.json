@@ -1,0 +1,100 @@
+{
+  "fields": [
+    {
+      "name": "BrightnessLevel",
+      "type": "CUSTOM",
+      "valueClass": "Integer",
+      "isCollection": false,
+      "description": "Brightness Level of the LED",
+      "tags": [],
+      "unitSymbol": "%",
+      "metaData": [
+        {
+          "type": "MIN_VALUE_INTEGER",
+          "value": 0
+        },
+        {
+          "type": "MIN_VALUE_STRICT",
+          "value": false
+        },
+        {
+          "type": "MAX_VALUE_INTEGER",
+          "value": 100
+        },
+        {
+          "type": "MAX_VALUE_STRICT",
+          "value": false
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "name": "SetOn",
+      "description": "on mode",
+      "parameters": [],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "SetOff",
+      "description": "off mode",
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "SetReading",
+      "description": "reading mode",
+      "parameters": [],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "SetMovie",
+      "description": "movie mode",
+      "parameters": [],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "SetSleep",
+      "description": "sleep mode",
+      "parameters": [],
+      "isStandard": false,
+      "type": "CUSTOM"
+    },
+    {
+      "name": "SetBrightnessLevel",
+      "description": "Set Brightness Level",
+      "parameters": [
+        {
+          "name": "BrightnessLevel",
+          "type": "CUSTOM",
+          "valueClass": "Integer",
+          "unitSymbol": "%",
+          "metaData": [
+            {
+              "type": "MIN_VALUE_INTEGER",
+              "value": 0
+            },
+            {
+              "type": "MIN_VALUE_STRICT",
+              "value": false
+            },
+            {
+              "type": "MAX_VALUE_INTEGER",
+              "value": 100
+            },
+            {
+              "type": "MAX_VALUE_STRICT",
+              "value": false
+            }
+          ]
+        }
+      ],
+      "isStandard": false,
+      "type": "CUSTOM"
+    }
+  ],
+  "messageFormat": "json"
+}
