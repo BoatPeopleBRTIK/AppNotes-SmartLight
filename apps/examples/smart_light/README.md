@@ -42,7 +42,7 @@ Then refer to [artik.io](https://developer.artik.io/documentation/artik-05x/gett
 $ make image ota
 ```
 Note: The resulting "ota.bin" can be found under **/build/configs/$(BOARD_NAME)/bin**  
-This image can be used to upload into ARTIK Cloud for OTA update under device management. 
+This image can be used to upload into [ARTIK Cloud](https://developer.artik.cloud/documentation/device-management/ota-updates.html) for OTA update under device management. 
 
 
 Enjoy!
