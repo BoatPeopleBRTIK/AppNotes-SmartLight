@@ -16,10 +16,12 @@ This application is to use ARTIK 055S to implement smart dimmable light.  The sm
 
 Connect LED to ARTIK 055S like shown below:
 ![Smart Light Circuit](../../../external/docs/media/SmartLight_Circuit.png)
-
+The ARTIK 055S starter kit pin out map is listed [here](../../../build/configs/artik055s/README.md#artik055s-starter-kit-pinout).
 
 ## Build Application
+Refer [here](../../../README.md#ubuntu-development-setting) to setup development environment.
 ```bash
+$ cd os
 $ ./tools/configure.sh artik055s/typical
 $ make
 ```
@@ -33,12 +35,14 @@ $ make download ALL
 ```bash
 TASH>> smartlight
 ```
-
+Then refer to [artik.io](https://developer.artik.io/documentation/artik-05x/getting-started/communicate.html#auto-connect-artik-05x-to-wi-fi-and-artik-cloud) for detail instruction of how to connect ARTIK055S powered smart light device to Wi-Fi and ARTIK Cloud.
+ 
 ## Generate OTA Image
 ```bash
 $ make image ota
 ```
-Note: The resulting "ota.bin" can be found under **/build/configs/$(BOARD_NAME)/bin**
+Note: The resulting "ota.bin" can be found under **/build/configs/$(BOARD_NAME)/bin**  
+This image can be used to upload into ARTIK Cloud for OTA update under device management. 
 
 
 Enjoy!
