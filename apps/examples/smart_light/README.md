@@ -42,9 +42,9 @@ There are 5 pre-set brightness levels that can be used to control the brightness
 
 The above 5 brightness settings can be used both locally by pressing physical button (**SW703** on starter kit), and remotely by selecting the particular action using mobile app through ARTIK Cloud.
 
-There is an additional remote action that can be supported by using mobile app.  This remote action is called **SetBrightness**.  It can be used to remotely adjusting LED brightness to any preferrable brightness level between 0% to 100%.
+There is an additional remote action that can be supported by using mobile app.  This remote action is called **SetBrightness**.  It can be used to remotely adjusting LED brightness to any preferable  brightness level between 0% to 100%.
 
-Once the ARTIK 055s powered smart light device is powered up and connected to Wi-Fi and ARTIK Cloud throught the build-in onboarding process, the smart LED light is ready to use.
+Once the ARTIK 055s powered smart light device is powered up and connected to Wi-Fi and ARTIK Cloud through the build-in onboarding process, the smart LED light is ready to use.
 
 
 ## Build Application
