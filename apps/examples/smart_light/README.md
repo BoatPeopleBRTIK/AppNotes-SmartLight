@@ -7,6 +7,7 @@ This application is to use ARTIK 055S to implement smart dimmable light.  The sm
 ## Contents
 
 > * [Prepare Hardware](#prepare-hardware)
+> * [About Smart Light application](#about-smart-light-application)
 > * [Build Application](#build-application)
 > * [Program Binary](#program-binary)
 > * [Run Smart Light application](#run-smart-light-application)
@@ -17,6 +18,10 @@ This application is to use ARTIK 055S to implement smart dimmable light.  The sm
 Connect LED to ARTIK 055S like shown below:
 ![Smart Light Circuit](../../../external/docs/media/SmartLight_Circuit.png)
 The ARTIK 055S starter kit pin out map is listed [here](../../../build/configs/artik055s/README.md#artik055s-starter-kit-pinout).
+
+## About Smart Light Application
+
+
 
 ## Build Application
 Refer [here](../../../README.md#ubuntu-development-setting) to setup development environment.
